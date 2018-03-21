@@ -40,4 +40,13 @@ public class Talk {
     public void setSpeakers(Set<Speaker> speakers) {
         this.speakers = speakers;
     }
+
+    @Override
+    public String toString() {
+        return "Talk{" +
+                "title='" + title + '\'' +
+                ", about='" + about + '\'' +
+                ", speakers=" + speakers +
+                '}';
+    }
 }

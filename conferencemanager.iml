@@ -5,6 +5,8 @@
       <configuration>
         <fileset id="fileset" name="Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/repoContext.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/serviceContext.xml</file>
         </fileset>
       </configuration>
     </facet>

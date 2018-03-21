@@ -27,4 +27,12 @@ public class Speaker {
     public void setSurName(String surName) {
         this.surName = surName;
     }
+
+    @Override
+    public String toString() {
+        return "Speaker{" +
+                "name='" + name + '\'' +
+                ", surName='" + surName + '\'' +
+                '}';
+    }
 }

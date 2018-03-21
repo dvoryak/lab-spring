@@ -6,9 +6,12 @@
 
     <bean name="talkRepo" class="repository.InTalkRepoImpl"/>
 
-    <bean name="talkService" class="service.SimpleTalkService">
-        <constructor-arg ref="talkRepo" />
-    </bean>
+    <bean  class="repository.InTalkRepoImpl"/>
 
+    <bean name="sFactory"  class="repository.SpeakerFactory"/>
+
+    <bean name="speaker" factory-bean="sFactory" class="domain.Speaker" factory-method="create">
+        <constructor-arg value="Pavel"/>
+    </bean>
 
 </beans>

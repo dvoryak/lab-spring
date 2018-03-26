@@ -1,10 +1,15 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.util.Set;
 
+@Component
+@Scope("prototype")
 public class Talk {
+
     private String title;
     private String about;
     private Set<Speaker> speakers;

@@ -1,6 +1,7 @@
 package repository;
 
 import domain.Talk;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
 import domain.Speaker;
 import domain.Talk;
-import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import service.TalkService;
 
@@ -14,24 +15,38 @@ public class ConfApp {
         Speaker speaker = new Speaker("Pavel","Dvoryak");
 
         ConfigurableApplicationContext repoContext =
-                new ClassPathXmlApplicationContext("repoContext.xml");
+                new AnnotationConfigApplicationContext(RepoConf.class);
 
-        ConfigurableApplicationContext serviceContext =
-                new ClassPathXmlApplicationContext(new String[] {"serviceContext.xml"},repoContext);
+        AnnotationConfigApplicationContext serviceContext =
+                new AnnotationConfigApplicationContext();
+        serviceContext.setParent(repoContext);
+        serviceContext.register(ServiceConf.class);
+        serviceContext.refresh();
+
 
 
         TalkService talkService = (TalkService) serviceContext.getBean("talkService");
 
-        talkService.createTalk("Some talk", speaker);
+//        ((SimpleTalkService) talkService).setContext(serviceContext);
+
+        talkService.createTalk("Title1", speaker);
+        talkService.createTalk("Title2", speaker);
+
+       // System.out.println(talkService.getClass());
+
         List<Talk> talks = talkService.talks();
 
 
         System.out.println(talks);
 
 
-        System.out.println(Arrays.toString(repoContext.getBeanDefinitionNames()));
 
-        System.out.println(repoContext.getBean("speaker"));
+        //System.out.println(Arrays.toString(serviceContext.getBeanDefinitionNames()));
+        System.out.println(serviceContext.getBeanDefinition("talkService"));
+
+       // System.out.println(repoContext.getBean("speaker"));
+
+        System.out.println(serviceContext.getBean(ServiceConf.class).getClass());
 
         serviceContext.close();
         repoContext.close();

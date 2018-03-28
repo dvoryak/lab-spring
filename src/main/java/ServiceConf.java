@@ -1,34 +1,38 @@
+import benchmark.BenchmarkBeanPostProcessor;
 import domain.Speaker;
 import domain.Talk;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Component;
+import repository.InTalkRepoImpl;
+import repository.TalkRepo;
 import service.SimpleTalkService;
 import service.TalkService;
 
 @Configuration
-//@Component
-//@ComponentScan(basePackages = "service")
+@Import(value = RepoConf.class)
 
 public class ServiceConf {
 
 
-    @Bean()
-    @Scope("prototype")
+    @Bean
     public Talk talk() {
         return new Talk();
     }
 
+    @Bean
+    public TalkRepo talkRepo() {
+        return new InTalkRepoImpl();
+    }
 
     @Bean
     public TalkService talkService() {
-        SimpleTalkService simpleTalkService = new SimpleTalkService() {
-            @Override
-            public Talk createEmptyTalk() {
-                return talk();
-            }
-        };
+        return new SimpleTalkService(talkRepo());
+    }
 
-        return simpleTalkService;
+    @Bean
+    public BeanPostProcessor benchmarkBeanPostProcessor() {
+        return new BenchmarkBeanPostProcessor();
     }
 
 }

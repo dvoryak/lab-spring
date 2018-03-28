@@ -11,4 +11,6 @@ public interface TalkService {
 
     List<Talk> talks();
 
+    void sayHello();
+
 }

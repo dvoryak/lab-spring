@@ -8,7 +8,6 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository("talkRepo")
 public class InTalkRepoImpl implements TalkRepo {
     private List<Talk> talks = new ArrayList<>();
 

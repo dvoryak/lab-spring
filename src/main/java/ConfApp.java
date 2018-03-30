@@ -1,10 +1,11 @@
 import domain.Speaker;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import service.TalkService;
 
 import java.util.Arrays;
-import java.util.List;
+
 
 public class ConfApp {
     public static void main(String[] args) {
@@ -13,13 +14,13 @@ public class ConfApp {
 
 
         ConfigurableApplicationContext serviceContext =
-                new AnnotationConfigApplicationContext(ServiceConf.class);
+                new ClassPathXmlApplicationContext("serviceContext.xml");
 
 
-        TalkService talkService = (TalkService) serviceContext.getBean("talkService");
+        TalkService talkService = (TalkService) serviceContext.getBean("service");
 
 
-        talkService.createTalk("titlte",speaker);
+//        talkService.createTalk("titlte",speaker);
 
         talkService.talks();
         talkService.talks();
@@ -29,7 +30,7 @@ public class ConfApp {
 
        // ((SimpleTalkService) talkService).sayHello();
 
-        System.out.println(Arrays.toString(serviceContext.getBeanDefinitionNames()));
+       // System.out.println(Arrays.toString(serviceContext.getBeanDefinitionNames()));
 
         serviceContext.close();
 

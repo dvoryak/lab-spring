@@ -2,7 +2,10 @@ package benchmark;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -16,16 +19,23 @@ import java.util.Map;
 
 public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
 
+    // ord ?
+
     @Override
     public Object postProcessBeforeInitialization(final Object bean, String beanName) throws BeansException {
 
-        final List<String> methods = new ArrayList<>();
+        final List<String> methodsName = new ArrayList<>();
 
         for (Method method : bean.getClass().getDeclaredMethods()) {
-            if(method.isAnnotationPresent(Benchmark.class)) {
-                methods.add(method.getName());
+            if (method.isAnnotationPresent(Benchmark.class)) {
+                methodsName.add(method.getName());
             }
         }
+
+        if (methodsName.isEmpty()) {
+            return bean;
+        }
+
 
         return Proxy.newProxyInstance(
                 bean.getClass().getClassLoader(),
@@ -33,14 +43,14 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
                 new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if(methods.contains(method.getName())) {
-                            System.out.println("Start");
+                        if (methodsName.contains(method.getName())) {
+                            System.out.println("------------Start------------");
                             long startTime = System.nanoTime();
                             Object invoke = method.invoke(bean, args);
-                            System.out.println("Finished: " + (System.nanoTime() - startTime));
+                            System.out.println("---------Finished: " + (System.nanoTime() - startTime + "----------"));
                             return invoke;
                         } else {
-                            return method.invoke(bean,args);
+                            return method.invoke(bean, args);
                         }
                     }
                 }
@@ -51,4 +61,6 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
+
+
 }

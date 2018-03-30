@@ -11,7 +11,6 @@ import java.util.List;
 public class InTalkRepoImpl implements TalkRepo {
     private List<Talk> talks = new ArrayList<>();
 
-    @PostConstruct
     public void init() {
         System.out.println("init");
     }

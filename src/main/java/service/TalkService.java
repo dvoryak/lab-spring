@@ -13,4 +13,6 @@ public interface TalkService {
 
     void sayHello();
 
+    Talk getTalk();
+
 }
